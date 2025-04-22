@@ -1,7 +1,5 @@
-flask
+fastapi
+gunicorn
+uvicorn
 scikit-learn
 numpy
-gunicorn
-fastapi
-uvicorn
-
