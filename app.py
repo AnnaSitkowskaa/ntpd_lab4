@@ -3,9 +3,13 @@ from pydantic import BaseModel
 from typing import List, Optional
 import numpy as np
 from sklearn.linear_model import LinearRegression
+import os
 
 # Tworzymy aplikację FastAPI
 app = FastAPI()
+
+# Odczytanie zmiennej środowiskowej (np. klucz API)
+API_KEY = os.getenv("API_KEY", "brak_klucza")
 
 # Inicjalizacja i trenowanie modelu
 model = LinearRegression()
@@ -37,12 +41,17 @@ def predict(data: InputData):
 def info():
     return {"model": "Linear Regression", "features": 1}
 
-# Endpoint sprawdzający, czy serwer działa
+# Endpoint do sprawdzania zdrowia serwera
 @app.get("/health")
 def health():
     return {"status": "ok"}
 
-# Uruchamianie serwera (dla bezpośredniego uruchomienia pliku)
+# Endpoint pokazujący wartość zmiennej środowiskowej
+@app.get("/api-key")
+def get_api_key():
+    return {"api_key": API_KEY}
+
+# Uruchamianie serwera (dla lokalnego uruchomienia)
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(app, host="0.0.0.0", port=8001, reload=True)
